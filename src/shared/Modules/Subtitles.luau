@@ -1,4 +1,3 @@
-local TweenService = game:GetService("TweenService")
 local Subtitles = {}
 Subtitles.__index = Subtitles
 
@@ -45,7 +44,7 @@ end
 function Subtitles:Start()
     local startTime = time()
     self.task = task.spawn(function()
-        for subtitle: Subtitle in self.parsedSubtitles do
+        for _, subtitle: Subtitle in self.parsedSubtitles do
             if startTime < subtitle.start then
                 task.wait(subtitle.start - startTime)
             end
