@@ -45,14 +45,11 @@ function Subtitles:Start()
     local startTime = time()
     self.task = task.spawn(function()
         for _, subtitle: Subtitle in self.parsedSubtitles do
-            if startTime < subtitle.start then
-                task.wait(subtitle.start - startTime)
-            end
+            task.wait(subtitle.start - (time() - startTime))
 
-            local duration = subtitle.finish - subtitle.start
             for i = 1, #subtitle.text do
                 self.TextLabel.Text = subtitle.text:sub(1, i)
-                task.wait(duration / #subtitle.text)
+                task.wait(1 / 50)
             end
         end
     end)
