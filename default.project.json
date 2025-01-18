@@ -21,16 +21,6 @@
           "$path": "src/client"
         }
       }
-    },
-
-    "Workspace": {
-      
-    },
-    "Lighting": {
-      
-    },
-    "SoundService": {
-      
     }
   }
 }
