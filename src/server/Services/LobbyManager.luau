@@ -9,8 +9,8 @@ local TV = require(ReplicatedStorage.Shared.Modules.Lobby.TV)
 local SegmentDisplay = require(ReplicatedStorage.Shared.Modules.SegmentDisplay)
 local MetalDoor = require(ReplicatedStorage.Shared.Modules.Lobby.MetalDoor)
 
-local Lobby = game.Workspace.Lobby
-local megaphonesAudioPlayer = Lobby.Objects.Megaphones.AudioPlayer
+local lobby = game.Workspace.Lobby
+local megaphonesAudioPlayer = lobby.Objects.Megaphones.AudioPlayer
 local nextMarkerRE = ReplicatedStorage.Remotes.Cutscene.Marker
 
 local TIME_TO_START = 120
@@ -18,14 +18,14 @@ local TIME_TO_START = 120
 function LobbyManager.new()
 	local self = setmetatable({}, LobbyManager)
 
-	self.MainDoubleDoor = DoubleDoor.new(Lobby.Entrance.MainDoorway.DoubleDoor)
-	self.SecondDoubleDoor = DoubleDoor.new(Lobby.Entrance.SecondDoorway.DoubleDoor)
-	self.TV = TV.new(Lobby.Objects.TV)
-	self.MetalDoor = MetalDoor.new(Lobby.PinkRoomEntrance.MetalDoor)
-	self.SegmentDisplay = SegmentDisplay.new(Lobby.Objects.SegmentDisplay)
+	self.MainDoubleDoor = DoubleDoor.new(lobby.Entrance.MainDoorway.DoubleDoor)
+	self.SecondDoubleDoor = DoubleDoor.new(lobby.Entrance.SecondDoorway.DoubleDoor)
+	self.TV = TV.new(lobby.Objects.TV)
+	self.MetalDoor = MetalDoor.new(lobby.PinkRoomEntrance.MetalDoor)
+	self.SegmentDisplay = SegmentDisplay.new(lobby.Objects.SegmentDisplay)
 
 	self.PinkGuys = {}
-	for _, pinkGuy in Lobby.Entrance.PinkGuys:GetChildren() do
+	for _, pinkGuy in lobby.Entrance.PinkGuys:GetChildren() do
 		if pinkGuy.Name == "SquareGuy" then
 			self.SquareGuy = NPC.new(pinkGuy)
 			continue
@@ -35,7 +35,7 @@ function LobbyManager.new()
 	end
 
 	self.EmptyBeds = {}
-	for _, beds in Lobby.Objects.Beds:GetChildren() do
+	for _, beds in lobby.Objects.Beds:GetChildren() do
 		for _, beds in beds:GetChildren() do
 			for _, bed in beds:GetChildren() do
 				table.insert(self.EmptyBeds, bed)
