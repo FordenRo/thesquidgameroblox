@@ -67,7 +67,7 @@ function CameraController:CameraRender(deltaTime: number)
 	local rootPart: BasePart = player.Character:FindFirstChild("HumanoidRootPart")
 	if not rootPart then return end
 
-	local neck: Motor6D = head:FindFirstChild("Neck")
+	local neck = head:FindFirstChild("Neck") :: Motor6D
 
 	local relativeVelocity = rootPart.CFrame:ToObjectSpace(rootPart.CFrame - rootPart.AssemblyLinearVelocity).Position
 	self.Roll = Lerp(self.Roll, math.clamp(relativeVelocity.X / 4, -10, 10), deltaTime * 4)

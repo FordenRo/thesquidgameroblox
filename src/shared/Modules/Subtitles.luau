@@ -31,9 +31,9 @@ function Subtitles.new(SRT: string)
     self.ScreenGui.Destroying:Once(function() self:Stop() end)
 
     self.parsedSubtitles = {}
-    for index: string, start: string, finish: string, text: string in string.gmatch(self.SRT, "(%d+)\n(%d%d:%d%d:%d%d,%d%d%d) %-%-> (%d%d:%d%d:%d%d,%d%d%d)\n(.-)\n?\n") do
-        local startTime = tonumber(start:sub(1, 2)) * 3600 + tonumber(start:sub(4, 5)) * 60 + tonumber(start:sub(7, 8)) + tonumber(start:sub(10)) / 1000
-        local finishTime = tonumber(finish:sub(1, 2)) * 3600 + tonumber(finish:sub(4, 5)) * 60 + tonumber(finish:sub(7, 8)) + tonumber(finish:sub(10)) / 1000
+    for index, start, finish, text in string.gmatch(self.SRT, "(%d+)\n(%d%d:%d%d:%d%d,%d%d%d) %-%-> (%d%d:%d%d:%d%d,%d%d%d)\n(.-)\n?\n") do
+        local startTime = tonumber(start:sub(1, 2))::number * 3600 + tonumber(start:sub(4, 5))::number * 60 + tonumber(start:sub(7, 8))::number + tonumber(start:sub(10))::number / 1000
+        local finishTime = tonumber(finish:sub(1, 2))::number * 3600 + tonumber(finish:sub(4, 5))::number * 60 + tonumber(finish:sub(7, 8))::number + tonumber(finish:sub(10))::number / 1000
         text = text:gsub("\n", " ")
         self.parsedSubtitles[tonumber(index)] = { start = startTime, finish = finishTime, text = text }
     end

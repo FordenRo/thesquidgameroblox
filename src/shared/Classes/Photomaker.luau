@@ -42,7 +42,7 @@ function Photomaker:Initiate()
 	self.Instance.Destroying:Once(function() self:Destroying() end)
 end
 
-function Photomaker:Touched(part: Part)
+function Photomaker:Touched(part: Part & {Parent: Instance})
 	if self.debounce then return end
 	if not part.Parent:FindFirstChildOfClass("Humanoid") then return end
 
@@ -59,12 +59,13 @@ Make a flashlight shot effect
 function Photomaker:Shot()
 	local function shot(lightPart: Part)
 		local color = lightPart.Color
-		lightPart:FindFirstChildOfClass("PointLight").Enabled = true
+		local pointLight = lightPart:FindFirstChildOfClass("PointLight")
+		pointLight.Enabled = true
 		lightPart.Color = Color3.fromRGB(255, 255, 255)
 
 		task.wait(0.1)
 
-		lightPart:FindFirstChildOfClass("PointLight").Enabled = false
+		pointLight.Enabled = false
 		lightPart.Color = color
 	end
 
@@ -100,7 +101,7 @@ end
 function Photomaker:Destroying()
 	self.Instance:Destroy()
 
-	for _, _task in self._tasks do
+	for _, _task: thread in self._tasks do
 		task.cancel(_task)
 	end
 end

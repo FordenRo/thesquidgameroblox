@@ -38,9 +38,11 @@ function CharacterVisibility:setCharacterVisibility()
 	end
 
 	for _, v: BasePart in player.Character:GetDescendants() do
-		if v:IsA("BasePart") and table.find(VISIBLE_PARTS, v.Name) then
+		if not v:IsA("BasePart") then continue end
+
+		if table.find(VISIBLE_PARTS, v.Name) then
 			v.LocalTransparencyModifier = 0
-		elseif v:IsA("BasePart") then
+		else
 			v.LocalTransparencyModifier = 1
 		end
 	end

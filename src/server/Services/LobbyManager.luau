@@ -68,14 +68,14 @@ function LobbyManager:Start()
 	self:FirstCutscene()
 end
 
-function LobbyManager:PlayerLoaded(player: Player)
+function LobbyManager:PlayerLoaded(player: Player & {Character: Model})
 	player:LoadCharacter()
 	task.wait(1)
 
 	local head = player.Character:WaitForChild("Head")
-	local humanoid: Humanoid = player.Character:WaitForChild("Humanoid")
-	local rootPart: BasePart = player.Character:WaitForChild("HumanoidRootPart")
-	local animator: Animator = humanoid:WaitForChild("Animator")
+	local humanoid = player.Character:WaitForChild("Humanoid") :: Humanoid
+	local rootPart = player.Character:WaitForChild("HumanoidRootPart") :: BasePart
+	local animator = humanoid:WaitForChild("Animator") :: Animator
 
 	local targetBed: BasePart = self.EmptyBeds[math.random(#self.EmptyBeds)]
 	table.remove(self.EmptyBeds, table.find(self.EmptyBeds, targetBed))
