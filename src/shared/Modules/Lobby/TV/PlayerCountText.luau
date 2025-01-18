@@ -14,10 +14,12 @@ function PlayerCountText:SetPlayerCount(count: number)
 	for i = 3, 1, -1 do
 		local letter = letters[i]
 		local label = self.Instance:FindFirstChild("D_" .. i)
+
 		if not letter then
 			label.Visible = false
 			continue
 		end
+
 		label.TextLabel.Text = letter
 		label.Visible = true
 	end

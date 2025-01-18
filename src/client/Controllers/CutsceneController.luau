@@ -10,14 +10,18 @@ function CutsceneController.new()
 
 	self.CurrentCutscene = nil
 
-	startCutsceneRE.OnClientEvent:Connect(function(name) self:StartCutscene(name) end)
+	startCutsceneRE.OnClientEvent:Connect(function(name)
+		self:StartCutscene(name)
+	end)
 
 	return self
 end
 
 function CutsceneController:StartCutscene(name: string)
 	self.CurrentCutscene = require(ReplicatedStorage.Shared.Modules.Cutscenes:FindFirstChild(name))
-	task.spawn(function() self.CurrentCutscene:Start() end)
+	task.spawn(function()
+		self.CurrentCutscene:Start()
+	end)
 end
 
 return CutsceneController.new()

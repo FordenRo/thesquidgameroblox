@@ -18,7 +18,9 @@ function MetalDoor.new(instance: Model)
 end
 
 function MetalDoor:Open()
-	if self.IsOpen then return end
+	if self.IsOpen then
+		return
+	end
 
 	local tween = TweenService:Create(self.Hinge, tweenInfo, { CFrame = self.openedCFrame })
 	tween:Play()
@@ -26,7 +28,9 @@ function MetalDoor:Open()
 end
 
 function MetalDoor:Close()
-	if not self.IsOpen then return end
+	if not self.IsOpen then
+		return
+	end
 
 	local tween = TweenService:Create(self.Hinge, tweenInfo, { CFrame = self.closedCFrame })
 	tween:Play()

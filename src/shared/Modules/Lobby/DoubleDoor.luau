@@ -22,16 +22,16 @@ function DoubleDoor.new(instance: Model)
 end
 
 function DoubleDoor:Open()
-	local leftTween = TweenService:Create(self.Left, tweenInfo, {CFrame = self.leftTargetCFrame})
-	local rightTween = TweenService:Create(self.Right, tweenInfo, {CFrame = self.rightTargetCFrame})
+	local leftTween = TweenService:Create(self.Left, tweenInfo, { CFrame = self.leftTargetCFrame })
+	local rightTween = TweenService:Create(self.Right, tweenInfo, { CFrame = self.rightTargetCFrame })
 
 	leftTween:Play()
 	rightTween:Play()
 end
 
 function DoubleDoor:Close()
-	local leftTween = TweenService:Create(self.Left, tweenInfo, {CFrame = self.leftStartCFrame})
-	local rightTween = TweenService:Create(self.Right, tweenInfo, {CFrame = self.rightStartCFrame})
+	local leftTween = TweenService:Create(self.Left, tweenInfo, { CFrame = self.leftStartCFrame })
+	local rightTween = TweenService:Create(self.Right, tweenInfo, { CFrame = self.rightStartCFrame })
 
 	leftTween:Play()
 	rightTween:Play()

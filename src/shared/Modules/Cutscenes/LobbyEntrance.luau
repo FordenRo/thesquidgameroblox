@@ -40,7 +40,11 @@ function Cutscene:Start()
 	local fov = math.clamp(120 - (camera.CFrame.Position - cameraTarget).Magnitude, 20, 70)
 	print((camera.CFrame.Position - cameraTarget).Magnitude)
 	print(fov)
-	local tween = TweenService:Create(camera, TweenInfo.new(3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { CFrame = cameraCFrame, FieldOfView = fov })
+	local tween = TweenService:Create(
+		camera,
+		TweenInfo.new(3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
+		{ CFrame = cameraCFrame, FieldOfView = fov }
+	)
 	tween:Play()
 	nextMarkerRE.OnClientEvent:Wait()
 
@@ -52,7 +56,8 @@ function Cutscene:Start()
 	lookAtSquareGuy()
 	nextMarkerRE.OnClientEvent:Wait()
 	task.wait(1)
-	camera.CFrame = CFrame.new(Vector3.new(squareGuyHead.Position.X, 15, -101)) * CFrame.fromOrientation(math.rad(-10), math.rad(180), 0)
+	camera.CFrame = CFrame.new(Vector3.new(squareGuyHead.Position.X, 15, -101))
+		* CFrame.fromOrientation(math.rad(-10), math.rad(180), 0)
 	task.wait(2.5)
 	Subtitles.new(SRT):Start()
 	lookAtSquareGuy()

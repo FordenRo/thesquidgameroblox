@@ -18,11 +18,19 @@ function CameraController.new()
 
 	camera.CameraType = Enum.CameraType.Custom
 
-	RunService:BindToRenderStep("CameraRender", Enum.RenderPriority.Camera.Value + 1, function(...) self:CameraRender(...) end)
+	RunService:BindToRenderStep("CameraRender", Enum.RenderPriority.Camera.Value + 1, function(...)
+		self:CameraRender(...)
+	end)
 
-	player.CharacterAdded:Connect(function() self:CharacterAdded() end)
-	attachCameraRE.OnClientEvent:Connect(function(...) self:AttachCamera(...) end)
-	resetCameraRE.OnClientEvent:Connect(function() self:ResetCamera() end)
+	player.CharacterAdded:Connect(function()
+		self:CharacterAdded()
+	end)
+	attachCameraRE.OnClientEvent:Connect(function(...)
+		self:AttachCamera(...)
+	end)
+	resetCameraRE.OnClientEvent:Connect(function()
+		self:ResetCamera()
+	end)
 
 	return self
 end
@@ -47,12 +55,18 @@ function CameraController:ResetCamera()
 end
 
 function CameraController:CameraRender(deltaTime: number)
-	if not player.Character then return end
+	if not player.Character then
+		return
+	end
 
-	if not self.Humanoid then return end
+	if not self.Humanoid then
+		return
+	end
 
 	local head: BasePart = player.Character:FindFirstChild("Head")
-	if not head then return end
+	if not head then
+		return
+	end
 
 	if self.AttachToPart then
 		camera.CFrame = self.AttachToPart:GetPivot()
@@ -65,7 +79,9 @@ function CameraController:CameraRender(deltaTime: number)
 	end
 
 	local rootPart: BasePart = player.Character:FindFirstChild("HumanoidRootPart")
-	if not rootPart then return end
+	if not rootPart then
+		return
+	end
 
 	local neck = head:FindFirstChild("Neck") :: Motor6D
 
@@ -78,10 +94,12 @@ function CameraController:CameraRender(deltaTime: number)
 
 	self.Humanoid.CameraOffset = rootPart.CFrame:ToObjectSpace(head.CFrame).Position - Vector3.new(0, 1.5, 0.5)
 
-	camera.CFrame = camera.CFrame * CFrame.Angles(
-		math.rad(math.cos(self.walkTime * 2) * deltaTime * relativeVelocity.Z / 3),
-		math.rad(math.sin(self.walkTime) * deltaTime * relativeVelocity.Z / 3),
-		math.rad(self.Roll))
+	camera.CFrame = camera.CFrame
+		* CFrame.Angles(
+			math.rad(math.cos(self.walkTime * 2) * deltaTime * relativeVelocity.Z / 3),
+			math.rad(math.sin(self.walkTime) * deltaTime * relativeVelocity.Z / 3),
+			math.rad(self.Roll)
+		)
 end
 
 return CameraController.new()

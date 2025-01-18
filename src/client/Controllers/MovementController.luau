@@ -14,9 +14,15 @@ local SPRINT_MULTIPLIER = 1.5
 function MovementController.new()
 	local self = setmetatable({}, MovementController)
 
-	ContextActionService:BindAction("Sprint", function(_, inputState) self:Sprint(inputState) end, false, Enum.KeyCode.LeftShift)
-	toggleMovementRE.OnClientEvent:Connect(function(...) self:ToggleMovement(...) end)
-	player.CharacterAdded:Connect(function() self:CharacterAdded() end)
+	ContextActionService:BindAction("Sprint", function(_, inputState)
+		self:Sprint(inputState)
+	end, false, Enum.KeyCode.LeftShift)
+	toggleMovementRE.OnClientEvent:Connect(function(...)
+		self:ToggleMovement(...)
+	end)
+	player.CharacterAdded:Connect(function()
+		self:CharacterAdded()
+	end)
 
 	return self
 end
@@ -35,7 +41,9 @@ function MovementController:CharacterAdded()
 end
 
 function MovementController:Sprint(inputState: Enum.UserInputState)
-	if not self.Humanoid then return end
+	if not self.Humanoid then
+		return
+	end
 
 	if inputState == Enum.UserInputState.Begin then
 		self.Humanoid.WalkSpeed = self.WalkSpeed * SPRINT_MULTIPLIER

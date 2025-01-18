@@ -13,8 +13,12 @@ function TV.new(instance: Model)
 
 	self.PlayerCountText:SetPlayerCount(0)
 
-	Players.PlayerAdded:Connect(function(...) self:UpdatePlayerCount() end)
-	Players.PlayerRemoving:Connect(function(...) self:UpdatePlayerCount() end)
+	Players.PlayerAdded:Connect(function()
+		self:UpdatePlayerCount()
+	end)
+	Players.PlayerRemoving:Connect(function()
+		self:UpdatePlayerCount()
+	end)
 
 	return self
 end

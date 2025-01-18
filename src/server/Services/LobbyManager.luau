@@ -49,7 +49,9 @@ function LobbyManager.new()
 end
 
 function LobbyManager:Initiate()
-	ReplicatedStorage.Remotes.PlayerLoaded.OnServerEvent:Connect(function(...) self:PlayerLoaded(...) end)
+	ReplicatedStorage.Remotes.PlayerLoaded.OnServerEvent:Connect(function(...)
+		self:PlayerLoaded(...)
+	end)
 
 	task.spawn(function()
 		repeat
@@ -68,7 +70,7 @@ function LobbyManager:Start()
 	self:FirstCutscene()
 end
 
-function LobbyManager:PlayerLoaded(player: Player & {Character: Model})
+function LobbyManager:PlayerLoaded(player: Player & { Character: Model })
 	player:LoadCharacter()
 	task.wait(1)
 
@@ -92,12 +94,15 @@ function LobbyManager:PlayerLoaded(player: Player & {Character: Model})
 	track:Play(0, 1)
 	track.Ended:Wait()
 
-	local raycastInfo = game.Workspace:Spherecast(targetBed:GetPivot().Position + targetBed:GetPivot().RightVector * 4, 1, -Vector3.yAxis * 30) :: RaycastResult
+	local raycastInfo = game.Workspace:Spherecast(
+		targetBed:GetPivot().Position + targetBed:GetPivot().RightVector * 4,
+		1,
+		-Vector3.yAxis * 30
+	) :: RaycastResult
     player.Character:PivotTo(CFrame.new(raycastInfo.Position, raycastInfo.Position + targetBed:GetPivot().RightVector))
     rootPart.Anchored = false
     ReplicatedStorage.Remotes.Camera.Reset:FireClient(player)
     ReplicatedStorage.Remotes.ToggleMovement:FireClient(player, true)
-	
 end
 
 function LobbyManager:FirstCutscene()
@@ -110,13 +115,19 @@ function LobbyManager:FirstCutscene()
 
 	task.wait(3.5)
 
-	task.delay(5, function() self.SecondDoubleDoor:Close() end)
-	task.delay(10, function() self.MainDoubleDoor:Close() end)
+	task.delay(5, function()
+		self.SecondDoubleDoor:Close()
+	end)
+	task.delay(10, function()
+		self.MainDoubleDoor:Close()
+	end)
 
 	for _, pinkGuy in self.PinkGuys do
 		local target = pinkGuy.Character.Target
 		pinkGuy:WalkTo(target.Position, 4)
-		pinkGuy.WalkToFinished:Once(function() pinkGuy:LookAt(pinkGuy:GetPivot().Position + target.CFrame.LookVector) end)
+		pinkGuy.WalkToFinished:Once(function()
+			pinkGuy:LookAt(pinkGuy:GetPivot().Position + target.CFrame.LookVector)
+		end)
 	end
 	self.SquareGuy:WalkTo(self.SquareGuy.Character.Target.Position, 4)
 	self.SquareGuy.WalkToFinished:Wait()

@@ -8,7 +8,7 @@ local FACE_FRAMES = {
 	73584305613097,
 	123774394005497,
 	109001259165479,
-	119288344009756
+	119288344009756,
 }
 
 function Photomaker.new(instance: Model)
@@ -20,7 +20,8 @@ function Photomaker.new(instance: Model)
 	self.debounce = false
 	self._tasks = {}
 
-	local screenContent = self.Instance:WaitForChild("Screen"):FindFirstChildOfClass("SurfaceGui"):FindFirstChild("Content")
+	local screenContent =
+		self.Instance:WaitForChild("Screen"):FindFirstChildOfClass("SurfaceGui"):FindFirstChild("Content")
 	self.SmileFace = screenContent:FindFirstChild("SmileFace")
 	self.Arrows = { screenContent:FindFirstChild("Arrow1"), screenContent:FindFirstChild("Arrow2") }
 
@@ -34,17 +35,35 @@ function Photomaker:Initiate()
 		arrow.Visible = false
 	end
 
-	table.insert(self._tasks, task.spawn(function() self:SmileFaceUpdate() end))
-	table.insert(self._tasks, task.spawn(function() self:ArrowUpdate() end))
+	table.insert(
+		self._tasks,
+		task.spawn(function()
+			self:SmileFaceUpdate()
+		end)
+	)
+	table.insert(
+		self._tasks,
+		task.spawn(function()
+			self:ArrowUpdate()
+		end)
+	)
 
-	self.Collider.Touched:Connect(function(part: Part) self:Touched(part) end)
+	self.Collider.Touched:Connect(function(part: Part)
+		self:Touched(part)
+	end)
 
-	self.Instance.Destroying:Once(function() self:Destroying() end)
+	self.Instance.Destroying:Once(function()
+		self:Destroying()
+	end)
 end
 
-function Photomaker:Touched(part: Part & {Parent: Instance})
-	if self.debounce then return end
-	if not part.Parent:FindFirstChildOfClass("Humanoid") then return end
+function Photomaker:Touched(part: Part & { Parent: Instance })
+	if self.debounce then
+		return
+	end
+	if not part.Parent:FindFirstChildOfClass("Humanoid") then
+		return
+	end
 
 	self.debounce = true
 	task.wait(5)
@@ -70,7 +89,9 @@ function Photomaker:Shot()
 	end
 
 	for _, lightPart: Part in self.LightParts do
-		task.spawn(function() shot(lightPart) end)
+		task.spawn(function()
+			shot(lightPart)
+		end)
 	end
 end
 
@@ -83,7 +104,7 @@ function Photomaker:SmileFaceUpdate()
 				task.wait(2)
 			end
 
-			task.wait(1/5)
+			task.wait(1 / 5)
 		end
 	end
 end

@@ -5,30 +5,46 @@ CharacterVisibility.__index = CharacterVisibility
 local player = game.Players.LocalPlayer
 
 local VISIBLE_PARTS = {
-	"LeftFoot", "LeftLowerLeg", "LeftUpperLeg", "LeftLowerArm", "LeftUpperArm", "LeftHand", "LowerTorso",
-	"RightFoot", "RightLowerLeg", "RightUpperLeg", "RightLowerArm", "RightUpperArm", "RightHand", "UpperTorso"
+	"LeftFoot",
+	"LeftLowerLeg",
+	"LeftUpperLeg",
+	"LeftLowerArm",
+	"LeftUpperArm",
+	"LeftHand",
+	"LowerTorso",
+	"RightFoot",
+	"RightLowerLeg",
+	"RightUpperLeg",
+	"RightLowerArm",
+	"RightUpperArm",
+	"RightHand",
+	"UpperTorso",
 }
 
 function CharacterVisibility.new()
-    local self = setmetatable({}, CharacterVisibility)
+	local self = setmetatable({}, CharacterVisibility)
 
-    self.Visible = false
+	self.Visible = false
 
-    player.CharacterAdded:Connect(function() self:Enable() end)
+	player.CharacterAdded:Connect(function()
+		self:Enable()
+	end)
 
-    return self
+	return self
 end
 
 function CharacterVisibility:Enable()
-    self.Visible = true
+	self.Visible = true
 
-    RunService:BindToRenderStep("CharacterVisibility", Enum.RenderPriority.Camera.Value + 1, function() self:setCharacterVisibility() end)
+	RunService:BindToRenderStep("CharacterVisibility", Enum.RenderPriority.Camera.Value + 1, function()
+		self:setCharacterVisibility()
+	end)
 end
 
 function CharacterVisibility:Disable()
-    self.Visible = false
+	self.Visible = false
 
-    RunService:UnbindFromRenderStep("CharacterVisibility")
+	RunService:UnbindFromRenderStep("CharacterVisibility")
 end
 
 function CharacterVisibility:setCharacterVisibility()
@@ -38,7 +54,9 @@ function CharacterVisibility:setCharacterVisibility()
 	end
 
 	for _, v: BasePart in player.Character:GetDescendants() do
-		if not v:IsA("BasePart") then continue end
+		if not v:IsA("BasePart") then
+			continue
+		end
 
 		if table.find(VISIBLE_PARTS, v.Name) then
 			v.LocalTransparencyModifier = 0
