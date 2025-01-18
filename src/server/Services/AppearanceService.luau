@@ -48,6 +48,9 @@ function AppearanceService:PlayerAdded(player: Player)
 
         local labels = labels:Clone()
         for _, surfaceGui: SurfaceGui in labels:GetChildren() do
+            local label = (surfaceGui:FindFirstChild("ImageLabel") :: ImageLabel):FindFirstChild("TextLabel") :: TextLabel
+            label.Text = string.format("%03d", GameService:GetPlayerIndex(player))
+
             surfaceGui.Adornee = character:FindFirstChild("UpperTorso") :: BasePart
         end
         labels.Parent = character
