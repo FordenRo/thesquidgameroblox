@@ -89,7 +89,7 @@ function LobbyManager:PlayerLoaded(player: Player & { Character: Model })
 
 	local track = animator:LoadAnimation(ReplicatedStorage.Animations.WakeCutscene)
 	track:GetMarkerReachedSignal("ScreenCover"):Connect(function()
-		ReplicatedStorage.Remotes.ScreenCover:FireClient(player, 0.5, true)
+		ReplicatedStorage.Remotes.WakeScreenCover:FireClient(player)
 	end)
 	track:Play(0, 1)
 	track.Ended:Wait()
