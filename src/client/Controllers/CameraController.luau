@@ -43,9 +43,9 @@ function CameraController:CharacterAdded()
 end
 
 function CameraController:AttachCamera(instance: BasePart)
-	self.AttachToPart = instance
-	camera.CameraType = Enum.CameraType.Scriptable
 	player.CameraMode = Enum.CameraMode.Classic
+	camera.CameraType = Enum.CameraType.Scriptable
+	self.AttachToPart = instance
 end
 
 function CameraController:ResetCamera()
