@@ -24,10 +24,10 @@ local VISIBLE_PARTS = {
 function CharacterVisibility.new()
 	local self = setmetatable({}, CharacterVisibility)
 
-	self.Visible = false
+	self.Visible = true
 
-	player.CharacterAdded:Connect(function()
-		self:Enable()
+	RunService:BindToRenderStep("CharacterVisibility", Enum.RenderPriority.Camera.Value + 1, function()
+		self:setCharacterVisibility()
 	end)
 
 	return self
@@ -35,21 +35,14 @@ end
 
 function CharacterVisibility:Enable()
 	self.Visible = true
-
-	RunService:BindToRenderStep("CharacterVisibility", Enum.RenderPriority.Camera.Value + 1, function()
-		self:setCharacterVisibility()
-	end)
 end
 
 function CharacterVisibility:Disable()
 	self.Visible = false
-
-	RunService:UnbindFromRenderStep("CharacterVisibility")
 end
 
 function CharacterVisibility:setCharacterVisibility()
 	if not player.Character then
-		self:Disable()
 		return
 	end
 
