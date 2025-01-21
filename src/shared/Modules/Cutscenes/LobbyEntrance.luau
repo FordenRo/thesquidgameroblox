@@ -1,4 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
 local Cutscene = {}
@@ -35,7 +36,8 @@ function Cutscene:Start()
 
 	local startCameraFOV = camera.FieldOfView
 	local cameraTarget = game.Workspace.Lobby.Entrance.MainDoorway.DoubleDoor:GetPivot().Position
-	local squareGuyHead = game.Workspace.Lobby.Entrance.PinkGuys.SquareGuy.Head
+	local squareGuy = game.Workspace.Lobby.Entrance.PinkGuys.SquareGuy
+	local squareGuyHead = squareGuy.Head
 	local cameraCFrame = CFrame.new(camera.CFrame.Position, cameraTarget)
 	local fov = math.clamp(120 - (camera.CFrame.Position - cameraTarget).Magnitude, 20, 70)
 	print((camera.CFrame.Position - cameraTarget).Magnitude)
@@ -47,6 +49,18 @@ function Cutscene:Start()
 	)
 	tween:Play()
 	nextMarkerRE.OnClientEvent:Wait()
+
+	local audioAnalyzer = squareGuy:FindFirstChildOfClass("AudioAnalyzer")
+	local speakAnimTask = task.spawn(function()
+		local head = squareGuy:FindFirstChild("Head")
+		local neck = head:FindFirstChild("Neck") :: Motor6D
+		while true do
+			local time, deltaTime = RunService.Stepped:Wait()
+
+			local angle = math.rad(audioAnalyzer.RmsLevel * 50)
+			neck.C0 = neck.C0:Lerp(CFrame.new(neck.C0.Position) * CFrame.Angles(angle, 0, 0), deltaTime * 8)
+		end
+	end)
 
 	local function lookAtSquareGuy()
 		camera.CFrame = CFrame.new(Vector3.new(squareGuyHead.Position.X, 13, -85), squareGuyHead.Position)
