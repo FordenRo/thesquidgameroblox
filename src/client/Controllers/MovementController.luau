@@ -17,11 +17,13 @@ function MovementController.new()
 	ContextActionService:BindAction("Sprint", function(_, inputState)
 		self:Sprint(inputState)
 	end, false, Enum.KeyCode.LeftShift)
+
 	toggleMovementRE.OnClientEvent:Connect(function(...)
 		self:ToggleMovement(...)
 	end)
-	player.CharacterAdded:Connect(function()
-		self:CharacterAdded()
+
+	task.spawn(function()
+		self:Initiate()
 	end)
 
 	return self
@@ -35,9 +37,17 @@ function MovementController:ToggleMovement(state: boolean)
 	end
 end
 
-function MovementController:CharacterAdded()
+function MovementController:Initiate()
+	if not player.Character then
+		player.CharacterAdded:Wait()
+	end
+
 	self.Humanoid = player.Character:WaitForChild("Humanoid")
 	self.WalkSpeed = self.Humanoid.WalkSpeed
+
+	player.CharacterAdded:Connect(function()
+		self:Initiate()
+	end)
 end
 
 function MovementController:Sprint(inputState: Enum.UserInputState)
