@@ -20,6 +20,7 @@ local VOICES = {
 	"rbxassetid://130643839158305",
 	"rbxassetid://128704410551742",
 }
+local TIME_TO_START = 120
 
 function LobbyManager.new()
 	local self = setmetatable({}, LobbyManager)
