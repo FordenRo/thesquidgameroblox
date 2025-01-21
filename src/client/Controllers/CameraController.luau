@@ -22,9 +22,6 @@ function CameraController.new()
 		self:CameraRender(...)
 	end)
 
-	player.CharacterAdded:Connect(function()
-		self:CharacterAdded()
-	end)
 	attachCameraRE.OnClientEvent:Connect(function(...)
 		self:AttachCamera(...)
 	end)
@@ -32,14 +29,19 @@ function CameraController.new()
 		self:ResetCamera()
 	end)
 
+	self:Initiate()
+
 	return self
 end
 
-function CameraController:CharacterAdded()
+function CameraController:Initiate()
 	self.Angle = 0
 	self.Roll = 0
 	self.walkTime = 0
-	self.Humanoid = player.Character:WaitForChild("Humanoid")
+
+	player.CharacterAdded:Connect(function()
+		self:Initiate()
+	end)
 end
 
 function CameraController:AttachCamera(instance: BasePart)
@@ -59,7 +61,8 @@ function CameraController:CameraRender(deltaTime: number)
 		return
 	end
 
-	if not self.Humanoid then
+	local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+	if not humanoid then
 		return
 	end
 
@@ -73,7 +76,7 @@ function CameraController:CameraRender(deltaTime: number)
 		return
 	end
 
-	if self.Humanoid.Health == 0 then
+	if humanoid.Health == 0 then
 		camera.CFrame = head.CFrame
 		return
 	end
@@ -92,7 +95,7 @@ function CameraController:CameraRender(deltaTime: number)
 	local relativeCameraDirection = rootPart.CFrame:ToObjectSpace(camera.CFrame).LookVector
 	neck.C0 = CFrame.new(neck.C0.Position) * CFrame.Angles(math.asin(relativeCameraDirection.Y), 0, 0)
 
-	self.Humanoid.CameraOffset = rootPart.CFrame:ToObjectSpace(head.CFrame).Position - Vector3.new(0, 1.5, 0.5)
+	humanoid.CameraOffset = rootPart.CFrame:ToObjectSpace(head.CFrame).Position - Vector3.new(0, 1.5, 0.5)
 
 	camera.CFrame = camera.CFrame
 		* CFrame.Angles(
