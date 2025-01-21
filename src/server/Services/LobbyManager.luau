@@ -13,7 +13,13 @@ local lobby = game.Workspace.Lobby
 local megaphonesAudioPlayer = lobby.Objects.Megaphones.AudioPlayer
 local nextMarkerRE = ReplicatedStorage.Remotes.Cutscene.Marker
 
-local TIME_TO_START = 120
+local VOICES = {
+	"rbxassetid://104819325954369",
+	"rbxassetid://72661029023058",
+	"rbxassetid://71257622025012",
+	"rbxassetid://130643839158305",
+	"rbxassetid://128704410551742",
+}
 
 function LobbyManager.new()
 	local self = setmetatable({}, LobbyManager)
@@ -106,13 +112,19 @@ function LobbyManager:PlayerLoaded(player: Player & { Character: Model })
 end
 
 function LobbyManager:FirstCutscene()
-	self.SecondDoubleDoor:Open()
+	local audioPlayer = self.SquareGuy.Character:FindFirstChildOfClass("AudioPlayer")
 
+	local function talkAndWait(assetId: string)
+		audioPlayer.AssetId = assetId
+		audioPlayer:Play()
+		audioPlayer.Ended:Wait()
+	end
+
+	self.SecondDoubleDoor:Open()
 	task.wait(3)
 
 	ReplicatedStorage.Remotes.Cutscene.Start:FireAllClients("LobbyEntrance")
 	self.MainDoubleDoor:Open()
-
 	task.wait(3.5)
 
 	task.delay(5, function()
@@ -141,15 +153,13 @@ function LobbyManager:FirstCutscene()
 	nextMarkerRE:FireAllClients()
 	task.wait(4)
 
-	local audioPlayer: AudioPlayer = self.SquareGuy.Character.AudioPlayer
-	audioPlayer.AssetId = (audioPlayer:FindFirstChild("Welcome1") :: Sound).SoundId :: string
-	audioPlayer:Play()
-	audioPlayer.Ended:Wait()
+	talkAndWait(VOICES[1])
 	task.wait(0.5)
-
-	audioPlayer.AssetId = (audioPlayer:FindFirstChild("Welcome2") :: Sound).SoundId :: string
-	audioPlayer:Play()
-	audioPlayer.Ended:Wait()
+	talkAndWait(VOICES[2])
+	task.wait(0.5)
+	talkAndWait(VOICES[3])
+	task.wait(0.1)
+	talkAndWait(VOICES[4])
 end
 
 return LobbyManager.new()
