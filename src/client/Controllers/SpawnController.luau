@@ -29,7 +29,7 @@ end
 
 function SpawnController:WakeScreenCover()
 	local screenCover = player.PlayerGui:FindFirstChild("ScreenCover") :: NumberValue
-	local tween = TweenService:Create(screenCover, TweenInfo.new(0.4), { Value = 1 })
+	local tween = TweenService:Create(screenCover, TweenInfo.new(0.2), { Value = 1 })
 	tween:Play()
 	tween.Completed:Wait()
 
