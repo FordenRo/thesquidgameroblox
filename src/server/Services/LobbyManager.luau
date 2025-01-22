@@ -8,6 +8,7 @@ local NPC = require(ReplicatedStorage.Shared.Modules.NPC)
 local TV = require(ReplicatedStorage.Shared.Modules.Lobby.TV)
 local SegmentDisplay = require(ReplicatedStorage.Shared.Modules.SegmentDisplay)
 local MetalDoor = require(ReplicatedStorage.Shared.Modules.Lobby.MetalDoor)
+local PiggyBank = require(ReplicatedStorage.Shared.Modules.Lobby.PiggyBank)
 
 local lobby = game.Workspace.Lobby
 local megaphonesAudioPlayer = lobby.Objects.Megaphones.AudioPlayer
@@ -30,6 +31,7 @@ function LobbyManager.new()
 	self.TV = TV.new(lobby.Objects.TV)
 	self.MetalDoor = MetalDoor.new(lobby.PinkRoomEntrance.MetalDoor)
 	self.SegmentDisplay = SegmentDisplay.new(lobby.Objects.SegmentDisplay)
+	self.PiggyBank = PiggyBank.new(lobby.PiggyBank)
 
 	self.PinkGuys = {}
 	for _, pinkGuy in lobby.Entrance.PinkGuys:GetChildren() do
@@ -42,9 +44,9 @@ function LobbyManager.new()
 	end
 
 	self.EmptyBeds = {}
-	for _, beds in lobby.Objects.Beds:GetChildren() do
-		for _, beds in beds:GetChildren() do
-			for _, bed in beds:GetChildren() do
+	for _, bedPacks in lobby.Objects.Beds:GetChildren() do
+		for _, bedPack in bedPacks:GetChildren() do
+			for _, bed in bedPack:GetChildren() do
 				table.insert(self.EmptyBeds, bed)
 			end
 		end
@@ -71,6 +73,8 @@ function LobbyManager:Initiate()
 		self.SegmentDisplay:Clear()
 		self:Start()
 	end)
+
+	self:ToggleLights(true)
 end
 
 function LobbyManager:Start()
@@ -110,6 +114,19 @@ function LobbyManager:PlayerLoaded(player: Player & { Character: Model })
     rootPart.Anchored = false
     ReplicatedStorage.Remotes.Camera.Reset:FireClient(player)
     ReplicatedStorage.Remotes.ToggleMovement:FireClient(player, true)
+end
+
+function LobbyManager:ToggleLights(state: boolean)
+	local enabledColor = Color3.new(1, 1, 1)
+	local disabledColor = Color3.new(0.3, 0.3, 0.3)
+	local color = if state then enabledColor else disabledColor
+
+	local light = lobby.Ceil.LightPart:FindFirstChildOfClass("SurfaceLight")
+	local lamps = lobby.Ceil.Lamps:GetChildren()
+	for _, lamp in lamps do
+		lamp.Neon.Neon.Color = color
+	end
+	light.Enabled = state
 end
 
 function LobbyManager:FirstCutscene()
@@ -161,6 +178,14 @@ function LobbyManager:FirstCutscene()
 	talkAndWait(VOICES[3])
 	task.wait(0.1)
 	talkAndWait(VOICES[4])
+	task.wait(1)
+	nextMarkerRE:FireAllClients()
+	task.wait(1)
+
+	self:ToggleLights(false)
+	self.PiggyBank:ToggleLights(true)
+	self.PiggyBank:Pull()
+	self.PiggyBank.PullEnd:Wait()
 end
 
 return LobbyManager.new()
