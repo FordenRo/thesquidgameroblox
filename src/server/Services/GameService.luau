@@ -1,4 +1,5 @@
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local GameService = {}
 GameService.__index = GameService
@@ -11,11 +12,20 @@ function GameService.new()
 		self:PlayerAdded(player)
 	end)
 
+	ReplicatedStorage.Functions.GetPlayerIndex.OnServerInvoke = function(_, player: Player)
+		return self.PlayerIndexes[player]
+	end
+
 	return self
 end
 
 function GameService:PlayerAdded(player: Player)
 	self.PlayerIndexes[player] = self:getUniqueIndex()
+
+	player.CharacterAdded:Connect(function(character: Model)
+		local head = character:FindFirstChild("Head") :: BasePart
+		head.CanCollide = true
+	end)
 end
 
 function GameService:getUniqueIndex(): number
