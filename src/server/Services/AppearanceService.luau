@@ -45,17 +45,19 @@ function AppearanceService:PlayerAdded(player: Player)
 		local pants = character:FindFirstChildOfClass("Pants")
 
 		if not shirt then
-			shirt = Instance.new("Shirt", character)
+			shirt = Instance.new("Shirt")
+			shirt.Parent = character
 		end
 		if not pants then
-			pants = Instance.new("Pants", character)
+			pants = Instance.new("Pants")
+			pants.Parent = character
 		end
 
 		shirt.ShirtTemplate = "rbxassetid://140348701851075"
 		pants.PantsTemplate = "rbxassetid://7557677143"
 
-		local labels = labels:Clone()
-		for _, surfaceGui: SurfaceGui in labels:GetChildren() do
+		local labelsClone = labels:Clone()
+		for _, surfaceGui: SurfaceGui in labelsClone:GetChildren() do
 			local label = (surfaceGui:FindFirstChild("ImageLabel") :: ImageLabel):FindFirstChild(
 					"TextLabel"
 				) :: TextLabel
@@ -63,7 +65,7 @@ function AppearanceService:PlayerAdded(player: Player)
 
 			surfaceGui.Adornee = character:FindFirstChild("UpperTorso") :: BasePart
 		end
-		labels.Parent = character
+		labelsClone.Parent = character
 	end)
 end
 
