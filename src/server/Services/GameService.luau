@@ -34,18 +34,15 @@ function GameService:getUniqueIndex(): number
 		table.insert(occupiedIndexes, index)
 	end
 
-	if #occupiedIndexes == 0 then
-		return 1
-	end
-
-	for i = 1, occupiedIndexes[#occupiedIndexes] do
+	local availableIndexes = {}
+	for i = 1, 456 do
 		if table.find(occupiedIndexes, i) then
 			continue
 		end
 
-		return i
+		table.index(availableIndexes, i)
 	end
-	return occupiedIndexes[#occupiedIndexes] + 1
+	return availableIndexes[math.random(#availableIndexes)]
 end
 
 function GameService:GetPlayerIndex(player: Player): number
